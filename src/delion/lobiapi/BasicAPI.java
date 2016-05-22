@@ -70,19 +70,21 @@ public class BasicAPI {
 
 		return this.NetworkAPI.get(Pattern.get_string(source2, Pattern.twitter_redirect_to_lobi, "\""), header1).indexOf("ログインに失敗しました") == -1;
 	}
+	
+	
 
 	private static class Pattern{
 		public static String csrf_token = "<input type=\"hidden\" name=\"csrf_token\" value=\"";
-        public static String authenticity_token = "<input name=\"authenticity_token\" type=\"hidden\" value=\"";
-        public static String redirect_after_login = "<input name=\"redirect_after_login\" type=\"hidden\" value=\"";
-        public static String oauth_token = "<input id=\"oauth_token\" name=\"oauth_token\" type=\"hidden\" value=\"";
-        public static String twitter_redirect_to_lobi = "<a class=\"maintain-context\" href=\"";
-
-        public static String get_string(String source, String pattern, String end_pattern)
-        {
-            int start = source.indexOf(pattern) + pattern.length();
-            int end = source.indexOf(end_pattern, start + 1);
-            return source.substring(start, end);
-        }
+		public static String authenticity_token = "<input name=\"authenticity_token\" type=\"hidden\" value=\"";
+		public static String redirect_after_login = "<input name=\"redirect_after_login\" type=\"hidden\" value=\"";
+		public static String oauth_token = "<input id=\"oauth_token\" name=\"oauth_token\" type=\"hidden\" value=\"";
+		public static String twitter_redirect_to_lobi = "<a class=\"maintain-context\" href=\"";
+		
+		public static String get_string(String source, String pattern, String end_pattern)
+		{
+			int start = source.indexOf(pattern) + pattern.length();
+			int end = source.indexOf(end_pattern, start + 1);
+			return source.substring(start, end);
+		}
 	}
 }
