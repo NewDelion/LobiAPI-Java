@@ -1,15 +1,15 @@
 package delion.lobiapi.HttpAPI.Header;
 
 public class PostHeader {
-	public String Host;
-	public boolean Connection;
-	public String Accept;
-	public String UserAgent;
-	public String Referer;
-	public String AcceptEncoding;
-	public String AcceptLanguage;
-	public String Origin;
-	public String ContentType;
+	public String Host= "";
+	public boolean Connection = false;
+	public String Accept= "";
+	public String UserAgent= "";
+	public String Referer= "";
+	public String AcceptEncoding= "";
+	public String AcceptLanguage= "";
+	public String Origin= "";
+	public String ContentType= "";
 	
 	public PostHeader setHost(String host){
 		this.Host = host;
