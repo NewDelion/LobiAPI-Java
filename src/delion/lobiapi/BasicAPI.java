@@ -6,7 +6,9 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import delion.lobiapi.HttpAPI.Http;
@@ -69,7 +71,7 @@ public class BasicAPI {
 		try {
 			post_data = String.format("authenticity_token=%s&redirect_after_login=%s&oauth_token=%s&session%%5Busername_or_email%%5D=%s&session%%5Bpassword%%5D=%s", authenticity_token, URLEncoder.encode(redirect_after_login, "UTF-8"), oauth_token, mail, password);
 		} catch (UnsupportedEncodingException e) {
-			//URLエンコードに失敗...
+			e.printStackTrace();
 		}
 		PostHeader header2 = new PostHeader()
 				.setHost("api.twitter.com")
@@ -97,8 +99,12 @@ public class BasicAPI {
 		try {
 			String result_json = this.NetworkAPI.get("https://web.lobi.co/api/me?fields=premium", header);
 			return new ObjectMapper().readValue(result_json, Me.class);
+		} catch (JsonParseException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
 		} catch (IOException e) {
-			
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -121,8 +127,12 @@ public class BasicAPI {
 				if(pg.get(0).items.length == 0)
 					break;
 				result.addAll(pg);
+			} catch (JsonParseException e) {
+				e.printStackTrace();
+			} catch (JsonMappingException e) {
+				e.printStackTrace();
 			} catch (IOException e) {
-				
+				e.printStackTrace();
 			}
 		}
 		if(result.size() > 0)
@@ -148,8 +158,12 @@ public class BasicAPI {
 				if(pg.get(0).items.length == 0)
 					break;
 				result.addAll(pg);
+			} catch (JsonParseException e) {
+				e.printStackTrace();
+			} catch (JsonMappingException e) {
+				e.printStackTrace();
 			} catch (IOException e) {
-				
+				e.printStackTrace();
 			}
 		}
 		if(result.size() > 0)
@@ -167,8 +181,12 @@ public class BasicAPI {
 		
 		try {
 			return new ObjectMapper().readValue(this.NetworkAPI.get("https://web.lobi.co/api/info/notifications?platform=any&last_cursor=0", header), Notifications.class);
+		} catch (JsonParseException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
 		} catch (IOException e) {
-			
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -183,8 +201,12 @@ public class BasicAPI {
 		
 		try {
 			return new ObjectMapper().readValue(this.NetworkAPI.get("https://web.lobi.co/api/user/" + uid + "/contacts", header), Contacts.class);
+		} catch (JsonParseException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
 		} catch (IOException e) {
-			
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -199,8 +221,12 @@ public class BasicAPI {
 		
 		try {
 			return new ObjectMapper().readValue(this.NetworkAPI.get("https://web.lobi.co/api/user/" + uid + "/followers", header), Followers.class);
+		} catch (JsonParseException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
 		} catch (IOException e) {
-			
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -215,8 +241,12 @@ public class BasicAPI {
 		
 		try {
 			return new ObjectMapper().readValue(this.NetworkAPI.get("https://web.lobi.co/api/group/" + uid + "?error_flavor=json2&fields=group_bookmark_info%2Capp_events_info", header), Group.class);
+		} catch (JsonParseException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
 		} catch (IOException e) {
-			
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -232,8 +262,12 @@ public class BasicAPI {
 		try {
 			Integer result = new ObjectMapper().readValue(this.NetworkAPI.get("https://web.lobi.co/api/group/" + uid + "?error_flavor=json2&fields=group_bookmark_info%2Capp_events_info", header), Group.class).members_count;
 			return result == null ? 0 : (int)result;
+		} catch (JsonParseException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
 		} catch (IOException e) {
-			
+			e.printStackTrace();
 		}
 		return -1;
 	}
@@ -259,8 +293,12 @@ public class BasicAPI {
 				if(g.members_next_cursor == 0)
 					break;
 				next = g.members_next_cursor.toString();
+			} catch (JsonParseException e) {
+				e.printStackTrace();
+			} catch (JsonMappingException e) {
+				e.printStackTrace();
 			} catch (IOException e) {
-				
+				e.printStackTrace();
 			}
 		}
 		return (User[])result.toArray(new User[0]);
@@ -277,11 +315,17 @@ public class BasicAPI {
 		try {
 			List<Chat> result = new ObjectMapper().readValue(this.NetworkAPI.get("https://web.lobi.co/api/group/" + uid + "/chats?count=" + count, header), new TypeReference<List<Chat>>(){});
 			return (Chat[])result.toArray(new Chat[0]);
+		} catch (JsonParseException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
 		} catch (IOException e) {
-			
+			e.printStackTrace();
 		}
 		return null;
 	}
+	
+	
 	
 	private static class Pattern{
 		public static String csrf_token = "<input type=\"hidden\" name=\"csrf_token\" value=\"";
